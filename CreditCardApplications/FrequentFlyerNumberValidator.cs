@@ -16,6 +16,12 @@
     {
         public IServiceInformation ServiceInformation => throw new System.NotImplementedException("Simulate this real dependency.");
 
+        public ValidationMode ValidationMode
+        {
+            get => throw new System.NotImplementedException("Simulate this real dependency.");
+            set => throw new System.NotImplementedException("Simulate this real dependency.");
+        }
+
         public bool IsValid(string frequentFlyerNumber)
         {
             throw new System.NotImplementedException("Simulate this real dependency being hard to use.");
