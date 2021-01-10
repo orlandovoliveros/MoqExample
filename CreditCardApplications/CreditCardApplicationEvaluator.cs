@@ -10,9 +10,17 @@ namespace CreditCardApplications
 
         private readonly IFrequentFlyerNumberValidator _frequentFlyerNumberValidator;
 
+        public int ValidatorLookupCount { get; private set; }
+
         public CreditCardApplicationEvaluator(IFrequentFlyerNumberValidator frequentFlyerNumberValidator)
         {
             _frequentFlyerNumberValidator = frequentFlyerNumberValidator ?? throw new System.ArgumentNullException(nameof(frequentFlyerNumberValidator));
+            _frequentFlyerNumberValidator.ValidatorLookupPerformed += FrequentFlyerNumberValidator_ValidatorLookupPerformed;
+        }
+
+        private void FrequentFlyerNumberValidator_ValidatorLookupPerformed(object sender, EventArgs e)
+        {
+            ++ValidatorLookupCount;
         }
 
         public CreditCardApplicationDecision Evaluate(CreditCardApplication application)

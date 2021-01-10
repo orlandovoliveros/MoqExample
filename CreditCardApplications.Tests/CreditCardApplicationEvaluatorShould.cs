@@ -264,8 +264,10 @@ namespace CreditCardApplications.Tests
             var mockValidator = new Mock<IFrequentFlyerNumberValidator>();
 
             mockValidator.Setup(x => x.ServiceInformation.License.Key).Returns("OK");
-            mockValidator.Setup(x => x.IsValid(It.IsAny<string>()))
-                .Throws(new Exception("Custom message."));
+
+            //mockValidator.Setup(x => x.IsValid(It.IsAny<string>()))
+            //    .Throws(new Exception("Custom message."));
+
             mockValidator.Setup(x => x.IsValid(It.IsAny<string>()))
                .Throws<Exception>();
 
@@ -279,6 +281,31 @@ namespace CreditCardApplications.Tests
             var decision = sut.Evaluate(application);
 
             Assert.Equal(CreditCardApplicationDecision.ReferredToHuman, decision);
+        }
+
+        [Fact]
+        public void IncrementLookupCount()
+        {
+            var mockValidator = new Mock<IFrequentFlyerNumberValidator>();
+
+            mockValidator.Setup(x => x.ServiceInformation.License.Key).Returns("OK");
+            mockValidator.Setup(x => x.IsValid(It.IsAny<string>()))
+                .Returns(true)
+                .Raises(x => x.ValidatorLookupPerformed += null, EventArgs.Empty);
+
+            var sut = new CreditCardApplicationEvaluator(mockValidator.Object);
+
+            var application = new CreditCardApplication
+            {
+                FrequenceFlyerNumber = "x",
+                Age = 25
+            };
+
+            sut.Evaluate(application);
+
+            //mockValidator.Raise(x => x.ValidatorLookupPerformed += null, EventArgs.Empty);
+
+            Assert.Equal(1, sut.ValidatorLookupCount);
         }
     }
 }

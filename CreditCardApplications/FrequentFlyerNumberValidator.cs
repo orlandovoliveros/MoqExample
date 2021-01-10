@@ -1,4 +1,6 @@
-﻿namespace CreditCardApplications
+﻿using System;
+
+namespace CreditCardApplications
 {
     /// <summary>
     /// Contacts an external service to validiate a frequent flyer number.
@@ -21,6 +23,8 @@
             get => throw new System.NotImplementedException("Simulate this real dependency.");
             set => throw new System.NotImplementedException("Simulate this real dependency.");
         }
+
+        public event EventHandler ValidatorLookupPerformed;
 
         public bool IsValid(string frequentFlyerNumber)
         {
