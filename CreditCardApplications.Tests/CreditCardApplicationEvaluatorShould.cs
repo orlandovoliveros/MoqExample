@@ -156,5 +156,24 @@ namespace CreditCardApplications.Tests
 
             Assert.Equal(ValidationMode.Detailed, validatorMock.Object.ValidationMode);
         }
+
+        [Fact]
+        public void ValidateFrequentFlyerNumberForLowIncomeApplication()
+        {
+            var mockValidator = new Mock<IFrequentFlyerNumberValidator>();
+
+            mockValidator.Setup(x => x.ServiceInformation.License.Key).Returns("OK");
+
+            var sut = new CreditCardApplicationEvaluator(mockValidator.Object);
+
+            var application = new CreditCardApplication
+            {
+                FrequenceFlyerNumber = "q"
+            };
+
+            sut.Evaluate(application);
+
+            mockValidator.Verify(x => x.IsValid(It.IsAny<string>()));
+        }
     }
 }
