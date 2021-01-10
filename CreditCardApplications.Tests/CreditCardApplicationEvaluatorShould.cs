@@ -1,4 +1,5 @@
 using Moq;
+using Moq.Protected;
 using System;
 using System.Collections.Generic;
 using Xunit;
@@ -361,7 +362,12 @@ namespace CreditCardApplications.Tests
             var mockValidator = new Mock<IFrequentFlyerNumberValidator>();
 
             var mockFraudLookup = new Mock<FraudLookup>();
-            mockFraudLookup.Setup(x => x.IsFraudRisk(It.IsAny<CreditCardApplication>()))
+
+            //mockFraudLookup.Setup(x => x.IsFraudRisk(It.IsAny<CreditCardApplication>()))
+            //    .Returns(true);
+            mockFraudLookup
+                .Protected()
+                .Setup<bool>("CheckApplication", ItExpr.IsAny<CreditCardApplication>())
                 .Returns(true);
 
             var sut = new CreditCardApplicationEvaluator(
