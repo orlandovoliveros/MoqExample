@@ -1,2 +1,2 @@
 # Moq Example
-Moq Tutorial Demo Project
+Moq Example from Pluralsight course.
